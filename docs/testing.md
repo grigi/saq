@@ -46,8 +46,4 @@ If you want to call on the queue directly, {py:class}`unittest.mock` has a cavea
 
 ## Provided assertions
 
-```{eval-rst}
-.. autoapiclass:: saq.testing.TestQueue
-    :noindex:
-    :members: getEnqueued, assertEnqueuedTimes, assertNotEnqueued, getRetried, assertRetriedTimes, assertNotRetried
-```
+Assertions are documented in API Reference: {py:class}`saq.testing.TestQueue`

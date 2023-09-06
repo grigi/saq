@@ -16,13 +16,14 @@ if t.TYPE_CHECKING:
 
 class Context(t.TypedDict, total=False):
     """
-    Task context
+    Task context.
+
+    Extra context fields are allowed.
     """
 
     worker: Required[Worker]
     job: Job
     queue: Queue
-    sleep: int
 
 
 class JobTaskContext(t.TypedDict, total=False):

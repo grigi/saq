@@ -16,9 +16,30 @@ from saq.worker import Worker
 
 
 class TestWorker(Worker):
-    def __init__(self, settings_obj: dict[str, t.Any]) -> None:
-        settings_obj["queue"] = AsyncMock(Queue)
-        super().__init__(**settings_obj)
+    """
+    This is a test double of Worker that mocks out the queue.
+
+    Args:
+        settings: Settings dictionary
+    """
+
+    def __init__(self, settings: dict[str, t.Any]) -> None:
+        settings["queue"] = AsyncMock(Queue)
+        super().__init__(**settings)
+
+    async def process_job(self, job: Job) -> Job:
+        """
+        Processes the provided in the current process without involving any queue.
+        Mainly useful for testing failures and retries.
+
+        Args:
+            job: The Job object to process.
+
+        Returns:
+            The modified job object.
+
+        """
+        return await super().process_job(job)
 
 
 class TestQueue(Queue):
@@ -33,6 +54,7 @@ class TestQueue(Queue):
     Raises:
         AssertionError: If both `worker` and `settings` have been provided.
     """
+
     def __init__(
         self, *, worker: Worker | None = None, settings: dict[str, t.Any] | None = None
     ) -> None:
@@ -64,6 +86,7 @@ class TestQueue(Queue):
         self._retried.append(job)
 
     async def enqueue(self, job_or_func: str | Job, **kwargs: t.Any) -> Job:
+        """"""  # pylint: disable=empty-docstring
         job = self.get_job(job_or_func, **kwargs)
         self._enqueued.append(job)
         return job
@@ -76,6 +99,7 @@ class TestQueue(Queue):
         return_exceptions: bool = False,
         **kwargs: t.Any,
     ) -> list[t.Any]:
+        """"""  # pylint: disable=empty-docstring
         if not self._worker:
             raise AssertionError(
                 "Please pass in a settings object so a worker can be faked"
